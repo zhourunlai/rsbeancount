@@ -1,12 +1,12 @@
 # Rsbeancount
 
-A tool to make the beancount file.
+A tool to make `beancount` file through the bill downloaded from payment platform.
 
 ## TODO
 
 - [ ] [Alipay](https://www.alipay.com/)
 - [ ] Wechat Pay
-- [ ] [China Merchants Bank](http://www.cmbchina.com/)(Salary card)
+- [ ] [China Merchants Bank](http://www.cmbchina.com/)(salary card)
 
 ## Reference
 

@@ -3,6 +3,11 @@ name = "rsbeancount"
 version = "0.1.0"
 authors = ["zhourunlai <xiaorun95@gmail.com>"]
 edition = "2018"
+repository = "https://github.com/zhourunlai/rsbeancount"
+readme = "README.md"
+license = "MIT"
+description = "A tool to make the beancount file in pure rust."
+keywords = ["rsbeancount", "beancount", "rust"]
 
 [dependencies]
 csv = "1"
