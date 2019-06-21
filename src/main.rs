@@ -45,52 +45,58 @@ fn csv_2_bean() -> Result<(), Box<Error>> {
         if i < 5 || record.len() != 17 {
             continue;
         }
-
         let tran = Transaction::new(record);
 
         // 规则
-        // you can add more
         if tran.drcr == "收入" {
             let income = match tran.payee.as_ref() {
                 "支付宝推荐赏金" => Income::Refer,
                 "博时基金管理有限公司" => Income::Profit,
                 _ => Income::Unknown,
             };
-
-            write!(
-                &mut beanfile,
-                "{date} * \"{payee}\" \"{good}\"
-    Equity:OpenBalance
-    {income}                       {amount} CNY  \n\n",
-                date = tran.get_data(),
-                payee = tran.payee,
-                good = tran.good,
-                amount = tran.amount,
-                income = income,
-            )?;
-        }
-
-        if tran.drcr == "支出" {
+            write_income(&mut beanfile, tran, income);
+        } else if tran.drcr == "支出" {
             let expenses = match tran.payee.as_ref() {
                 "上海公共交通卡股份有限公司" | "上海都畅数字技术有限公司" => Expenses::Traffic,
                 "饿了么" | "美团点评" => Expenses::Food,
                 _ => Expenses::Unknown,
             };
-
-            write!(
-                &mut beanfile,
-                "{date} * \"{payee}\" \"{good}\"
-    Assets:Cash                       -{amount} CNY
-    {expenses}                    {amount} CNY   \n\n",
-                date = tran.get_data(),
-                payee = tran.payee,
-                good = tran.good,
-                amount = tran.amount,
-                expenses = expenses,
-            )?;
+            write_expenses(&mut beanfile, tran, expenses);
         }
     }
     Ok(())
+}
+
+#[inline]
+fn write_income(beanfile: &mut File, tran: Transaction, income: Income) {
+    write!(
+        beanfile,
+        "{date} * \"{payee}\" \"{good}\"
+    Equity:OpenBalance
+    {income}                       {amount} CNY  \n\n",
+        date = tran.get_data(),
+        payee = tran.payee,
+        good = tran.good,
+        amount = tran.amount,
+        income = income,
+    )
+    .unwrap()
+}
+
+#[inline]
+fn write_expenses(beanfile: &mut File, tran: Transaction, expenses: Expenses) {
+    write!(
+        beanfile,
+        "{date} * \"{payee}\" \"{good}\"
+    Assets:Cash                       -{amount} CNY
+    {expenses}                    {amount} CNY   \n\n",
+        date = tran.get_data(),
+        payee = tran.payee,
+        good = tran.good,
+        amount = tran.amount,
+        expenses = expenses,
+    )
+    .unwrap()
 }
 
 pub fn main() {
