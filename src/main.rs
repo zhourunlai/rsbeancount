@@ -2,9 +2,11 @@ extern crate chrono;
 extern crate csv;
 extern crate encoding;
 
+mod account;
+mod transaction;
+
 use std::env;
 use std::error::Error;
-use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
 use std::process;
@@ -12,69 +14,10 @@ use std::process;
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
 
-use chrono::NaiveDateTime;
+use account::{Expenses, Income};
+use transaction::Transaction;
 
-#[derive(Debug)]
-struct Transaction {
-    trade_no: String,    // 交易号
-    order_no: String,    // 商家订单号
-    created_at: String,  // 交易创建时间
-    pay_at: String,      // 付款时间
-    updated_at: String,  // 最近修改时间
-    come_from: String,   // 交易来源地
-    source: String,      // 类型
-    payee: String,       // 交易对方
-    good: String,        // 商品名称
-    amount: String,      // 金额（元）
-    drcr: String,        // 收/支
-    pay_status: String,  // 交易状态
-    service_fee: String, // 服务费（元）
-    refund: String,      // 成功退款（元）
-    remark: String,      // 备注
-    fund_status: String, // 资金状态
-}
-
-impl Transaction {
-    fn new(record: csv::StringRecord) -> Self {
-        Transaction {
-            trade_no: record.get(0).unwrap_or("").trim().to_string(),
-            order_no: record.get(1).unwrap_or("").trim().to_string(),
-            created_at: record.get(2).unwrap_or("").trim().to_string(),
-            pay_at: record.get(3).unwrap_or("").trim().to_string(),
-            updated_at: record.get(4).unwrap_or("").trim().to_string(),
-            come_from: record.get(5).unwrap_or("").trim().to_string(),
-            source: record.get(6).unwrap_or("").trim().to_string(),
-            payee: record.get(7).unwrap_or("").trim().to_string(),
-            good: record.get(8).unwrap_or("").trim().to_string(),
-            amount: record.get(9).unwrap_or("").trim().to_string(),
-            drcr: record.get(10).unwrap_or("").trim().to_string(),
-            pay_status: record.get(11).unwrap_or("").trim().to_string(),
-            service_fee: record.get(2).unwrap_or("").trim().to_string(),
-            refund: record.get(13).unwrap_or("").trim().to_string(),
-            remark: record.get(14).unwrap_or("").trim().to_string(),
-            fund_status: record.get(15).unwrap_or("").trim().to_string(),
-        }
-    }
-}
-
-impl fmt::Display for Transaction {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let datetime = NaiveDateTime::parse_from_str(&self.created_at, "%Y-%m-%d %H:%M:%S").expect("");
-        write!(
-            f,
-            "{date} * \"{payee}\" \"{good}\"
-    Assets:Cash                    -{amount} CNY
-    Expenses:Traffic                {amount} CNY
-",
-            date = datetime.date(),
-            payee = self.payee,
-            good = self.good,
-            amount = self.amount
-        )
-    }
-}
-
-fn bean() -> Result<(), Box<Error>> {
+fn csv_2_bean() -> Result<(), Box<Error>> {
     let args: Vec<String> = env::args().collect();
     let csvpath = &args[1];
     let beanpath = &args[2];
@@ -104,55 +47,54 @@ fn bean() -> Result<(), Box<Error>> {
         }
 
         let tran = Transaction::new(record);
-        let date = NaiveDateTime::parse_from_str(&tran.created_at, "%Y-%m-%d %H:%M:%S")
-            .expect(&tran.created_at)
-            .date();
 
         // 规则
         // you can add more
         if tran.drcr == "收入" {
-            let mut income = "Unknown";
-            if tran.payee == "支付宝推荐赏金" {
-                income = "Refer";
-            }
+            let income = match tran.payee.as_ref() {
+                "支付宝推荐赏金" => Income::Refer,
+                "博时基金管理有限公司" => Income::Profit,
+                _ => Income::Unknown,
+            };
 
             write!(
                 &mut beanfile,
                 "{date} * \"{payee}\" \"{good}\"
     Equity:OpenBalance
-    Income:{income}                    {amount} CNY \n\n",
-                date = date,
+    {income}                       {amount} CNY  \n\n",
+                date = tran.get_data(),
                 payee = tran.payee,
                 good = tran.good,
                 amount = tran.amount,
-                income = income
+                income = income,
             )?;
         }
 
         if tran.drcr == "支出" {
-            let mut expenses = "Unknown";
-            if tran.payee == "上海公共交通卡股份有限公司" {
-                expenses = "Traffic";
-            }
+            let expenses = match tran.payee.as_ref() {
+                "上海公共交通卡股份有限公司" | "上海都畅数字技术有限公司" => Expenses::Traffic,
+                "饿了么" | "美团点评" => Expenses::Food,
+                _ => Expenses::Unknown,
+            };
 
             write!(
                 &mut beanfile,
                 "{date} * \"{payee}\" \"{good}\"
     Assets:Cash                       -{amount} CNY
-    Expenses:{expenses}                {amount} CNY \n\n",
-                date = date,
+    {expenses}                    {amount} CNY   \n\n",
+                date = tran.get_data(),
                 payee = tran.payee,
                 good = tran.good,
                 amount = tran.amount,
-                expenses = expenses
+                expenses = expenses,
             )?;
         }
     }
     Ok(())
 }
 
-fn main() {
-    if let Err(err) = bean() {
+pub fn main() {
+    if let Err(err) = csv_2_bean() {
         println!("error running bean: {}", err);
         process::exit(1);
     }

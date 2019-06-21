@@ -1,10 +1,13 @@
 ; 收入
 1990-01-01 open Income:Salary
 1990-01-01 open Income:Refer
+1990-01-01 open Income:Profit
 1990-01-01 open Income:Unknown
 
 ; 支出
 1990-01-01 open Expenses:Traffic
+1990-01-01 open Expenses:Food
+1990-01-01 open Expenses:Shopping
 1990-01-01 open Expenses:Unknown
 
 ; 负债
@@ -12,6 +15,8 @@
 
 ; 资产
 1990-01-01 open Assets:Cash
+1990-01-01 open Assets:Stock
+1990-01-01 open Assets:BacnkCards:BOC
 
 ; 权益
 1990-01-01 open Equity:OpenBalance
