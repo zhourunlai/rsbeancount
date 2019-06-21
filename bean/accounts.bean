@@ -1,0 +1,17 @@
+; 收入
+1990-01-01 open Income:Salary
+1990-01-01 open Income:Refer
+1990-01-01 open Income:Unknown
+
+; 支出
+1990-01-01 open Expenses:Traffic
+1990-01-01 open Expenses:Unknown
+
+; 负债
+1990-01-01 open Liabilities:CreditCards:CMB
+
+; 资产
+1990-01-01 open Assets:Cash
+
+; 权益
+1990-01-01 open Equity:OpenBalance

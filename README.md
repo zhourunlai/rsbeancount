@@ -4,9 +4,27 @@ A tool to make `beancount` file through the bill downloaded from payment platfor
 
 ## TODO
 
-- [ ] [Alipay](https://www.alipay.com/)
+- [X] [Alipay](https://consumeprod.alipay.com/record/advanced.htm)
 - [ ] Wechat Pay
-- [ ] [China Merchants Bank](http://www.cmbchina.com/)(salary card)
+- [ ] China Merchants Bank(salary card)
+
+### Usage
+
+Convert
+
+```shell
+cargo run csv/alipay_record_201901.csv bean/2019-01.bean
+```
+
+View
+
+```shell
+fava bean/main.bean
+```
+
+<img src="https://github.com/zhourunlai/rsbeancount/raw/master/bean.png">
+
+<img src="https://github.com/zhourunlai/rsbeancount/raw/master/fava.png">
 
 ## Reference
 

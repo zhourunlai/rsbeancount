@@ -1,2 +1,9 @@
 /target
 **/*.rs.bk
+
+csv/*
+csv.bak/*
+
+bean/*
+!bean/main.bean
+!bean/accounts.bean

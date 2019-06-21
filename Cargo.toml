@@ -11,3 +11,5 @@ keywords = ["rsbeancount", "beancount", "rust"]
 
 [dependencies]
 csv = "1"
+encoding = "0.2.33"
+chrono = "0.4.6"
