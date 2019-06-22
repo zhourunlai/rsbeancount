@@ -2,7 +2,8 @@ extern crate chrono;
 extern crate csv;
 extern crate encoding;
 
-mod account;
+mod enums;
+mod processor;
 mod transaction;
 
 use std::env;
@@ -14,7 +15,8 @@ use std::process;
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
 
-use account::{Expenses, Income};
+use enums::{Expenses, Income};
+use processor::Processor;
 use transaction::Transaction;
 
 fn csv_2_bean() -> Result<(), Box<Error>> {
@@ -54,49 +56,17 @@ fn csv_2_bean() -> Result<(), Box<Error>> {
                 "博时基金管理有限公司" => Income::Profit,
                 _ => Income::Unknown,
             };
-            write_income(&mut beanfile, tran, income);
+            income.write(&mut beanfile, tran);
         } else if tran.drcr == "支出" {
             let expenses = match tran.payee.as_ref() {
                 "上海公共交通卡股份有限公司" | "上海都畅数字技术有限公司" => Expenses::Traffic,
                 "饿了么" | "美团点评" => Expenses::Food,
                 _ => Expenses::Unknown,
             };
-            write_expenses(&mut beanfile, tran, expenses);
+            expenses.write(&mut beanfile, tran);
         }
     }
     Ok(())
-}
-
-#[inline]
-fn write_income(beanfile: &mut File, tran: Transaction, income: Income) {
-    write!(
-        beanfile,
-        "{date} * \"{payee}\" \"{good}\"
-    Equity:OpenBalance
-    {income}                       {amount} CNY  \n\n",
-        date = tran.get_data(),
-        payee = tran.payee,
-        good = tran.good,
-        amount = tran.amount,
-        income = income,
-    )
-    .unwrap()
-}
-
-#[inline]
-fn write_expenses(beanfile: &mut File, tran: Transaction, expenses: Expenses) {
-    write!(
-        beanfile,
-        "{date} * \"{payee}\" \"{good}\"
-    Assets:Cash                       -{amount} CNY
-    {expenses}                    {amount} CNY   \n\n",
-        date = tran.get_data(),
-        payee = tran.payee,
-        good = tran.good,
-        amount = tran.amount,
-        expenses = expenses,
-    )
-    .unwrap()
 }
 
 pub fn main() {
