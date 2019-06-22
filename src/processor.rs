@@ -1,3 +1,9 @@
+// This is a part of Rsbeancount.
+// Copyright (c) 2019, Zhou.
+// See README.md for details.
+
+//! Processor is a trait that defines some basic func to generate the bean file
+
 use std::fs::File;
 use std::io::Write;
 

@@ -1,3 +1,9 @@
+// This is a part of Rsbeancount.
+// Copyright (c) 2019, Zhou.
+// See README.md for details.
+
+//! Transaction is a struct according to the bill sheet.
+
 use chrono::{NaiveDate, NaiveDateTime};
 
 #[derive(Debug)]

@@ -1,3 +1,10 @@
+// This is a part of Rsbeancount.
+// Copyright (c) 2019, Zhou.
+// See README.md for details.
+
+//! Some enums according to the `beancount` syntax.
+//! And these are divided into my categories.
+
 use std::fmt;
 
 #[derive(Debug)]

@@ -1,3 +1,13 @@
+// This is a part of Rsbeancount.
+// Copyright (c) 2019, Zhou.
+// See README.md for details.
+
+//! A tool to make `beancount` file through the bill downloaded from payment platform.
+//!
+//! ```shell
+//! cargo run csv/alipay_record_201901.csv bean/2019-01.bean
+//! ```
+
 extern crate chrono;
 extern crate csv;
 extern crate encoding;
