@@ -40,9 +40,9 @@ fn csv_2_bean() -> Result<(), Box<Error>> {
         Err(e) => panic!("couldn't open {}: {}", csvpath, e.description()),
     };
     let mut reader: Vec<u8> = Vec::new();
-    csvfile.read_to_end(&mut reader).ok().expect("can not read file");
+    csvfile.read_to_end(&mut reader).expect("can not read file");
     let mut chars = String::new();
-    let _ = GB18030.decode_to(&mut reader, DecoderTrap::Ignore, &mut chars);
+    let _ = GB18030.decode_to(&reader, DecoderTrap::Ignore, &mut chars);
     let mut rdr = csv::ReaderBuilder::new().flexible(true).from_reader(chars.as_bytes());
 
     // 创建 bean 文件

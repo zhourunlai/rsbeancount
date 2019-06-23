@@ -1,8 +1,11 @@
 # Rsbeancount
 
-A tool to make `beancount` file through the bill downloaded from payment platform.
+[![Build Status](https://travis-ci.org/zhourunlai/rsbeancount.svg?branch=master)](https://travis-ci.org/zhourunlai/rsbeancount)
+[![GitHub license](https://img.shields.io/github/license/zhourunlai/rsbeancount.svg)](https://raw.githubusercontent.com/zhourunlai/rsbeancount/master/LICENSE)
 
-<a href="https://www.buymeacoffee.com/xiaorun" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/xiaorun)
+
+A tool to make `beancount` file through the bill downloaded from payment platform.
 
 ## TODO
 
@@ -15,7 +18,7 @@ A tool to make `beancount` file through the bill downloaded from payment platfor
 Convert
 
 ```shell
-cargo run csv/alipay_record_201901.csv bean/2019-01.bean
+cargo run csv/alipay_record_201901.csv bean/201901.bean
 ```
 
 View
