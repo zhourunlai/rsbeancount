@@ -1,0 +1,17 @@
+name: Rsbeancount
+version: "0.1"
+author: zhourunlai
+about: A tool to make beancount file
+args:
+    - csvpath:
+        short: c
+        long: csvpath
+        value_name: csvpath
+        help: Path of the csv file
+        takes_value: true
+    - beanpath:
+        short: b
+        long: beanpath
+        value_name: beanpath
+        help: Path of the bean file
+        takes_value: true

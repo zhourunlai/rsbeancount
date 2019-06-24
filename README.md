@@ -15,19 +15,17 @@ A tool to make `beancount` file through the bill downloaded from payment platfor
 
 ### Usage
 
-Convert
-
-```shell
-cargo run csv/alipay_record_201901.csv bean/201901.bean
-```
-
-View
-
-```shell
-fava bean/main.bean
-```
+1. `cargo build`
+2. `./target/debug/rsbeancount -c <csvpath> -b <beanpath>`
+3. more: `./target/debug/rsbeancount --help`
 
 <img src="https://github.com/zhourunlai/rsbeancount/raw/master/bean.png">
+
+### View
+
+1. `pip3 install beancount`
+2. `pip3 install fava`
+3. `fava bean/main.bean`
 
 <img src="https://github.com/zhourunlai/rsbeancount/raw/master/fava.png">
 

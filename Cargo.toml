@@ -10,6 +10,7 @@ description = "A tool to make the beancount file in pure rust."
 keywords = ["rsbeancount", "beancount", "rust"]
 
 [dependencies]
+clap = {version = "~2.33.0", features = ["yaml"]}
 chrono = "0.4.6"
 csv = "1"
 encoding = "0.2.33"

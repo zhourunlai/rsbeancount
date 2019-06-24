@@ -8,6 +8,9 @@
 //! cargo run csv/alipay_record_201901.csv bean/2019-01.bean
 //! ```
 
+#[macro_use]
+extern crate clap;
+
 extern crate chrono;
 extern crate csv;
 extern crate encoding;
@@ -16,11 +19,12 @@ mod enums;
 mod processor;
 mod transaction;
 
-use std::env;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::process;
+
+use clap::App;
 
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
@@ -29,11 +33,7 @@ use enums::{Expenses, Income};
 use processor::Processor;
 use transaction::Transaction;
 
-fn csv_2_bean() -> Result<(), Box<Error>> {
-    let args: Vec<String> = env::args().collect();
-    let csvpath = &args[1];
-    let beanpath = &args[2];
-
+fn csv_2_bean(csvpath: &str, beanpath: &str) -> Result<(), Box<Error>> {
     // 导入 csv 文件并处理中文
     let mut csvfile = match File::open(csvpath) {
         Ok(file) => file,
@@ -80,8 +80,14 @@ fn csv_2_bean() -> Result<(), Box<Error>> {
 }
 
 pub fn main() {
-    if let Err(err) = csv_2_bean() {
-        println!("error running bean: {}", err);
+    let yaml = load_yaml!("cli.yml");
+    let matches = App::from_yaml(yaml).get_matches();
+    let csvpath = matches.value_of("csvpath").unwrap();
+    let beanpath = matches.value_of("beanpath").unwrap();
+    println!("run {} => {}", csvpath, beanpath);
+
+    if let Err(err) = csv_2_bean(csvpath, beanpath) {
+        println!("error running: {}", err);
         process::exit(1);
     }
 }

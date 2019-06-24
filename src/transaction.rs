@@ -50,7 +50,7 @@ impl Transaction {
 
     pub fn get_data(&self) -> NaiveDate {
         NaiveDateTime::parse_from_str(self.created_at.as_ref(), "%Y-%m-%d %H:%M:%S")
-            .unwrap_or_else(|_| { panic!("{}", self.created_at) })
+            .unwrap_or_else(|_| panic!("{}", self.created_at))
             .date()
     }
 }
