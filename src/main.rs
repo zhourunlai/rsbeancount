@@ -29,11 +29,15 @@ use clap::App;
 use encoding::all::GB18030;
 use encoding::{DecoderTrap, Encoding};
 
-use enums::{Expenses, Income};
+use enums::{Expenses, Income, Source};
 use processor::Processor;
 use transaction::Transaction;
 
-fn csv_2_bean(csvpath: &str, beanpath: &str) -> Result<(), Box<Error>> {
+fn csv_2_bean(source: &str, csvpath: &str, beanpath: &str) -> Result<(), Box<Error>> {
+    if source != Source::Alipay.as_str() {
+        panic!("couldn't handle {} temporarily", source);
+    }
+
     // 导入 csv 文件并处理中文
     let mut csvfile = match File::open(csvpath) {
         Ok(file) => file,
@@ -82,11 +86,12 @@ fn csv_2_bean(csvpath: &str, beanpath: &str) -> Result<(), Box<Error>> {
 pub fn main() {
     let yaml = load_yaml!("cli.yml");
     let matches = App::from_yaml(yaml).get_matches();
-    let csvpath = matches.value_of("csvpath").unwrap();
-    let beanpath = matches.value_of("beanpath").unwrap();
-    println!("run {} => {}", csvpath, beanpath);
+    let source = matches.value_of("source").unwrap_or("Alipay");
+    let csvpath = matches.value_of("CSVPATH").unwrap();
+    let beanpath = matches.value_of("BEANPATH").unwrap();
+    println!("run {}: {} => {}", source, csvpath, beanpath);
 
-    if let Err(err) = csv_2_bean(csvpath, beanpath) {
+    if let Err(err) = csv_2_bean(source, csvpath, beanpath) {
         println!("error running: {}", err);
         process::exit(1);
     }

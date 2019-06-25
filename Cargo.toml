@@ -1,6 +1,6 @@
 [package]
 name = "rsbeancount"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["zhourunlai <xiaorun95@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/zhourunlai/rsbeancount"

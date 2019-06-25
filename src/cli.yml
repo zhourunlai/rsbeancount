@@ -3,15 +3,17 @@ version: "0.1"
 author: zhourunlai
 about: A tool to make beancount file
 args:
-    - csvpath:
-        short: c
-        long: csvpath
-        value_name: csvpath
+    - source:
+        short: s
+        long: source
+        value_name: ENUM
+        help: Source of the bill, default is Alipay
+        takes_value: true
+    - CSVPATH:
         help: Path of the csv file
-        takes_value: true
-    - beanpath:
-        short: b
-        long: beanpath
-        value_name: beanpath
+        required: true
+        index: 1
+    - BEANPATH:
         help: Path of the bean file
-        takes_value: true
+        required: true
+        index: 2

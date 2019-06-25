@@ -16,9 +16,29 @@ A tool to make `beancount` file through the bill downloaded from payment platfor
 
 ### Usage
 
-1. `cargo build`
-2. `./target/debug/rsbeancount -c <csvpath> -b <beanpath>`
-3. more: `./target/debug/rsbeancount --help`
+1. cargo build
+
+2. export PATH=$PATH:$PWD/target/debug
+
+3. rsbeancount <CSVPATH> <BEANPATH>
+
+4. rsbeancount --help
+
+```shell
+USAGE:
+    rsbeancount [OPTIONS] <CSVPATH> <BEANPATH>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -s, --source <ENUM>    Source of the bill, default is Alipay
+
+ARGS:
+    <CSVPATH>     Path of the csv file
+    <BEANPATH>    Path of the bean file
+```
 
 <img src="https://github.com/zhourunlai/rsbeancount/raw/master/bean.png">
 

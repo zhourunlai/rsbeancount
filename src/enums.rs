@@ -7,6 +7,14 @@
 
 use std::fmt;
 
+#[derive(Debug, PartialEq)]
+#[allow(dead_code)]
+pub enum Source {
+    Alipay, // 支付宝
+    Wepay,  // 微信支付
+    CMB,    // 招商银行
+}
+
 #[derive(Debug)]
 #[allow(dead_code)]
 pub enum Income {
@@ -43,6 +51,16 @@ pub enum Assets {
 #[allow(dead_code)]
 pub enum Equity {
     OpenBalance, // 自补
+}
+
+impl Source {
+    pub fn as_str(&self) -> &'static str {
+        match *self {
+            Source::Alipay => "Alipay",
+            Source::Wepay => "Wepay",
+            Source::CMB => "CMB",
+        }
+    }
 }
 
 impl fmt::Display for Income {
