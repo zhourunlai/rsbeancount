@@ -1,6 +1,7 @@
 # Rsbeancount
 
 [![Build Status](https://travis-ci.org/zhourunlai/rsbeancount.svg?branch=master)](https://travis-ci.org/zhourunlai/rsbeancount)
+[![crates.io](http://meritbadge.herokuapp.com/rsbeancount)](https://crates.io/crates/rsbeancount)
 [![GitHub license](https://img.shields.io/github/license/zhourunlai/rsbeancount.svg)](https://raw.githubusercontent.com/zhourunlai/rsbeancount/master/LICENSE)
 
 [![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/xiaorun)
